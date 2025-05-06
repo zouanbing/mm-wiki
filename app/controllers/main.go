@@ -1,9 +1,11 @@
 package controllers
 
 import (
-	"strings"
-
+	"github.com/go-ego/riot/types"
 	"github.com/phachon/mm-wiki/app/models"
+	"github.com/phachon/mm-wiki/app/utils"
+	"github.com/phachon/mm-wiki/global"
+	"strings"
 )
 
 type MainController struct {
@@ -161,25 +163,25 @@ func (this *MainController) Search() {
 	searchDocContents := make(map[string]string)
 	// 默认根据内容搜索
 	// v0.2.1 下线全文搜索功能
-	searchType = "title"
-	//if searchType == "title" {
-	//	documents, err = models.DocumentModel.GetDocumentsByLikeName(keyword)
-	//} else {
-	//	searchRes := global.DocSearcher.SearchDoc(types.SearchReq{Text: keyword})
-	//	searchDocIds := []string{}
-	//	for _, searchDoc := range searchRes.Docs {
-	//		if len(searchDoc.TokenSnippetLocs) == 0 {
-	//			continue
-	//		}
-	//		docId := searchDoc.DocId
-	//		content := searchDoc.Content
-	//		locIndex := searchDoc.TokenSnippetLocs[0]
-	//		searchContent := utils.Misc.SubStrUnicodeBySubStrIndex(content, keyword, locIndex, 30, 30)
-	//		searchDocContents[docId] = searchContent
-	//		searchDocIds = append(searchDocIds, docId)
-	//	}
-	//	documents, err = models.DocumentModel.GetDocumentsByDocumentIds(searchDocIds)
-	//}
+	//searchType = "title"
+	if searchType == "title" {
+		documents, err = models.DocumentModel.GetDocumentsByLikeName(keyword)
+	} else {
+		searchRes := global.DocSearcher.SearchDoc(types.SearchReq{Text: keyword})
+		searchDocIds := []string{}
+		for _, searchDoc := range searchRes.Docs {
+			if len(searchDoc.TokenSnippetLocs) == 0 {
+				continue
+			}
+			docId := searchDoc.DocId
+			content := searchDoc.Content
+			locIndex := searchDoc.TokenSnippetLocs[0]
+			searchContent := utils.Misc.SubStrUnicodeBySubStrIndex(content, keyword, locIndex, 30, 30)
+			searchDocContents[docId] = searchContent
+			searchDocIds = append(searchDocIds, docId)
+		}
+		documents, err = models.DocumentModel.GetDocumentsByDocumentIds(searchDocIds)
+	}
 	documents, err = models.DocumentModel.GetDocumentsByLikeName(keyword)
 	if err != nil {
 		this.ErrorLog("搜索文档出错：" + err.Error())

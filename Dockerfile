@@ -4,10 +4,10 @@ ENV TZ=Asia/Shanghai
 
 WORKDIR /app
 
-RUN git clone https://github.com/phachon/mm-wiki.git
+RUN git clone https://github.com/zouanbing/mm-wiki.git
 
 
-FROM golang:1.14.1-alpine
+FROM golang:1.24.1-alpine
 
 COPY --from=0 /app/mm-wiki /app/mm-wiki
 
@@ -20,6 +20,7 @@ WORKDIR /app/mm-wiki
 # RUN export GOPROXY=https://goproxy.cn
 
 RUN mkdir /opt/mm-wiki && ls /app/mm-wiki
+RUN mkdir /data  && mkdir /data/mm-wiki
 RUN go build -o /opt/mm-wiki/mm-wiki ./ \
     && cp -r ./conf/ /opt/mm-wiki \
     && cp -r ./install/ /opt/mm-wiki\

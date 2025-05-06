@@ -9,6 +9,10 @@ PROJECT_NAME="mm-wiki"
 INSTALL_NAME="install"
 BUILD_DIR="release"
 ROOT_DIR=$(pwd)
+# linux 下去执行
+CGO_ENABLED=0
+GOOS=linux
+GOARCH=amd64
 
 # windows .exe
 if [ "${GOOS}" = "" ]; then
