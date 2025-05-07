@@ -7,7 +7,8 @@ WORKDIR /app
 RUN git clone https://github.com/zouanbing/mm-wiki.git
 
 
-FROM golang:1.24.1-alpine
+
+FROM golang:1.14.1-alpine
 
 COPY --from=0 /app/mm-wiki /app/mm-wiki
 
