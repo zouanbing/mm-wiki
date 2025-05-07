@@ -20,7 +20,7 @@ WORKDIR /app/mm-wiki
 # RUN export GO111MODULE=on
 # RUN export GOPROXY=https://goproxy.cn
 
-RUN mkdir /opt/mm-wiki && ls /app/mm-wiki
+# RUN mkdir /opt/mm-wiki && ls /app/mm-wiki
 RUN mkdir /data  && mkdir /data/mm-wiki
 RUN go build -o /opt/mm-wiki/mm-wiki ./ \
     && cp -r ./conf/ /opt/mm-wiki \
